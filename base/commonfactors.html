@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="../css/style.css">
+<body class="gradient-bg">    
+<div class="center">
+  <h1 id="introText" class="big-title"></h1>
+  <button id="weiterBtn">Weiter</button>
+</div>
+
+<script>
+  (function(){
+    const texts = [
+      "Leute die etwas blaues tragen 👕",
+      "Leute die einen Rock tragen 👗",
+      "Leute die eine Brille tragen 👓",
+      "Leute die Enkelkinder haben 👵👴",
+      "Leute nicht aus England oder Deutschland 🌍",
+      "Leute die nicht verheiratet sind 🙋",
+      "Leute mit ausgeprägten Gesichtshaarwuchs 🧔",
+      "Leute die zur Esslinger Gemeinde gehören ⛪",
+      "Leute die mehr als 3 Kinder haben 👨‍👩‍👧‍👦",
+      "Leute die Teil des Chors sind 🎶"
+    ];
+    let idx = 0;
+    const introEl = document.getElementById('introText');
+    const btn = document.getElementById('weiterBtn');
+
+    function update() {
+      introEl.textContent = texts[idx];
+      if (idx === texts.length - 1) {
+        btn.textContent = 'Weiter zur nächsten Seite';
+      } else {
+        btn.textContent = 'Weiter';
+      }
+    }
+
+    btn.addEventListener('click', function(){
+      if (idx < texts.length - 1) {
+        idx++;
+        update();
+      } else {
+        location.href = 'title2.html';
+      }
+    });
+
+    // initialize
+    update();
+
+    // expose for debugging (optional)
+    window.__introTexts = {texts, getIndex: ()=>idx};
+  })();
+</script>
+</body>
+
+

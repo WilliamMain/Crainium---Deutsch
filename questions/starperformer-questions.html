@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Star Performer – Frage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="center">
+  <div class="card-container">
+    <div class="card-inner" id="flashcard">
+
+      <!-- Front -->
+      <div class="card-face card-front">
+        <div class="card-body">
+          <span class="category-tag" id="category-tag"></span>
+          <div class="text-area">
+            <h1 class="title" id="title"></h1>
+            <div class="description" id="question"></div>
+
+            <ul id="options" class="mc-options"></ul>
+          </div>
+
+          <div class="controls-row">
+            <button class="ctrl-btn" onclick="correct()">👍 Richtig</button>
+            <button class="main-action-btn" onclick="showAnswerFlip('flashcard')">Antwort zeigen</button>
+            <button class="ctrl-btn" onclick="wrong()">👎 Falsch</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back -->
+      <div class="card-face card-back">
+        <div class="card-body">
+          <div class="category-tag">Antwort</div>
+          <div class="text-area">
+            <div class="answer-highlight" id="back-answer"></div>
+            <p class="answer-explanation" id="back-explanation"></p>
+          </div>
+
+          <div class="controls-row">
+            <button class="ctrl-btn" onclick="correct()">👍 Richtig</button>
+            <button class="main-action-btn" onclick="flipCard('flashcard')">Zurück</button>
+            <button class="ctrl-btn" onclick="wrong()">👎 Falsch</button>
+          </div>
+        </div> 
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script src="../js/state.js"></script>
+<script src="../js/questions-starperformer.js"></script>
+<script src="../js/flashcard.js"></script>
+
+<script>
+const id = new URLSearchParams(location.search).get("id");
+const CATEGORY = "starperformer"; // 🔁 pro Kategorie anpassen
+const q = starperformerQuestions[id];
+
+document.getElementById("question").textContent = q.text;
+document.getElementById("back-answer").textContent = q.answer;
+document.getElementById("back-explanation").textContent = q.explanation || "";
+
+// Apply category theme, set category label, and add corner images inside both faces
+{
+  const container = document.querySelector('.card-container');
+  if (container) container.dataset.category = CATEGORY;
+
+  const categoryLabels = {
+    datahead: 'Data Head',
+    starperformer: 'Star Performer',
+    creativecat: 'Creative Cat',
+    wordworm: 'Word Worm'
+  };
+  const tag = document.getElementById('category-tag');
+  if (tag) tag.textContent = categoryLabels[CATEGORY] || CATEGORY;
+
+  const imageMap = {
+    datahead: 'datahead.gif',
+    starperformer: 'starperformer.png',
+    creativecat: 'creativecat.png',
+    wordworm: 'wordworm.png'
+  };
+
+  const frontFace = document.querySelector('.card-front');
+  const backFace = document.querySelector('.card-back');
+  if (frontFace && backFace) {
+    const imgFront = document.createElement('img');
+    imgFront.className = 'card-corner';
+    imgFront.src = `../assets/${imageMap[CATEGORY] || ''}`;
+    imgFront.alt = CATEGORY + ' icon';
+    frontFace.appendChild(imgFront);
+
+    const imgBack = imgFront.cloneNode(true);
+    backFace.appendChild(imgBack);
+  }
+}
+
+
+
+if (q.type === "mc") {
+  const box = document.getElementById("options");
+  q.options.forEach(o => {
+    const li = document.createElement("li");
+    li.textContent = o;
+    box.appendChild(li);
+  });
+}
+
+// If this is a simple question, center the front face content and push controls down
+if (q.type === "simple") {
+  const front = document.querySelector('.card-front');
+  if (front) front.classList.add('simple');
+}
+
+// Backwards-compatible showAnswer -> flips the card to reveal the back
+function showAnswer() {
+  showAnswerFlip('flashcard');
+}
+
+function markUsed() {
+  const key = `${CATEGORY}-${id}`;
+  GameState.usedQuestions[key] = true;
+  saveState();
+}
+
+function correct() {
+  markUsed();
+  GameState.scores[GameState.currentTeam]++;
+  saveState();
+ 
+  const maxScore = Math.max(...GameState.scores);
+  if (maxScore >= WIN_SCORE) {
+    location.href = "../base/winner.html";
+  }
+  else {
+    GameState.nextTeam();
+    location.href = "../base/categories.html";
+  }
+}
+
+function wrong() {
+  markUsed();
+  saveState();
+
+  GameState.nextTeam();
+  location.href = "../base/categories.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Gewinner</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="gradient-bg">
+
+<div class="center">
+  <h1 class="big-title">🏆 Spiel beendet!</h1>
+
+  <div id="podium"></div>
+
+  <button onclick="restart()">Neues Spiel</button>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script src="../js/state.js"></script>
+<script>
+const podium = document.getElementById("podium");
+
+const ranked = GameState.teams
+  .map((name, i) => ({ name, score: GameState.scores[i] }))
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 4);
+
+const medals = ["🥇", "🥈", "🥉", "🏅"];
+ranked.forEach((team, i) => {
+  const div = document.createElement("div");
+  div.style.fontSize = "2.5rem";
+  div.textContent = `${medals[i]} ${team.name} – ${team.score} Punkte`;
+  podium.appendChild(div);
+});
+
+
+function restart() {
+  localStorage.clear();
+  location.href = "../start.html";
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+confetti({
+  particleCount: 300,
+  spread: 100,
+  origin: { y: 0.6 }
+});
+</script>
+
+</body>
+</html>

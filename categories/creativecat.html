@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Creative Cat</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="center">
+  <h1 class="big-title">🎨 Creative Cat</h1>
+  <div class="question-box">
+    <div class="question-grid" id="list"></div>
+  </div>
+</div>
+<script src="../js/state.js"></script>
+<script>
+
+const TOTAL = 14;
+const list = document.getElementById("list");
+
+const CATEGORY = "creativecat";
+
+for (let i = 1; i <= TOTAL; i++) {
+  const btn = document.createElement("button");
+  const key = `${CATEGORY}-${i}`;
+
+  btn.textContent = i;
+
+  if (GameState.usedQuestions[key]) {
+    btn.disabled = true;
+    btn.classList.add("used");
+  } else {
+    btn.classList.add("unused");
+    btn.onclick = () => {
+      location.href = `../questions/creativecat-questions.html?id=${i}`;
+    };
+  }
+  list.appendChild(btn);
+}
+
+</script>
+
+</body>
+</html>

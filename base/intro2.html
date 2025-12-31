@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="../css/style.css">
+<body class="gradient-bg">
+<div class="center">
+  <h1 class="big-title">Regeln</h1>
+  <p id="introText" class="big-text"></p>
+  <button id="weiterBtn">Weiter</button>
+</div>
+
+<script>
+  (function(){
+    const texts = [
+      "Als Team entscheiet ihr euch für eine Kategorie. Es gibt 4 verschiedene Kategorien:",
+      "Data Head: Allgemeinwissen",
+      "Creative Cat: Wie Pictionary",
+      "Word Worm: Definitionen und Buchstabierung",
+      "Star Performer: Scharade",
+      "Dann wird eine Frage aus der gewählten Kategorie ausgesucht",
+      "Die Fragen werden laut vorgelesen und ihr habt eine Minute Zeit um zu antworten",
+      "Die Judges entscheiden ob's passt",
+      "Bereit?"
+    ];
+    let idx = 0;
+    const introEl = document.getElementById('introText');
+    const btn = document.getElementById('weiterBtn');
+
+    function update() {
+      introEl.textContent = texts[idx];
+      if (idx === texts.length - 1) {
+        btn.textContent = 'Weiter zur Team-Auswahl';
+      } else {
+        btn.textContent = 'Weiter';
+      }
+    }
+
+    btn.addEventListener('click', function(){
+      if (idx < texts.length - 1) {
+        idx++;
+        update();
+      } else {
+        location.href = 'teams.html';
+      }
+    });
+
+    // initialize
+    update();
+
+    // expose for debugging (optional)
+    window.__intro2Texts = {texts, getIndex: ()=>idx};
+  })();
+</script>
+</body>
+
+

@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="../css/style.css">
+<body class="gradient-bg">
+<div class="center">
+  <h1 class="big-title">Crainium</h1>
+  <p id="introText" class="big-text"></p>
+  <button id="weiterBtn">Weiter</button>
+</div>
+
+<script>
+  (function(){
+    const texts = [
+        "",
+      "Ziel: So viele Punkte zu gewinnen in der gegebenen Kategorie",
+      "Ihr braucht 10 Punkte um zu gewinnen"
+    ];
+    let idx = 0;
+    const introEl = document.getElementById('introText');
+    const btn = document.getElementById('weiterBtn');
+
+    function update() {
+      introEl.textContent = texts[idx];
+      if (idx === texts.length - 1) {
+        btn.textContent = 'Zu den Regeln';
+      } else {
+        btn.textContent = 'Weiter';
+      }
+    }
+
+    btn.addEventListener('click', function(){
+      if (idx < texts.length - 1) {
+        idx++;
+        update();
+      } else {
+        location.href = 'intro2.html';
+      }
+    });
+
+    // initialize
+    update();
+
+    // expose for debugging (optional)
+    window.__title2Texts = {texts, getIndex: ()=>idx};
+  })();
+</script>
+</body>

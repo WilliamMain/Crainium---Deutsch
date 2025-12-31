@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Kategorien</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="scoreboard" id="scoreboard"></div>
+
+  <div class="categories-area">
+    <div class="category-grid">
+      <div class="category-tile data" onclick="go('datahead')"><img src="../assets/datahead.gif" alt="Data Head" class="category-icon"><span class="category-label">Data Head</span></div>
+      <div class="category-tile word" onclick="go('wordworm')"><img src="../assets/wordworm.png" alt="Word Worm" class="category-icon"><span class="category-label">Word Worm</span></div>
+      <div class="category-tile creative" onclick="go('creativecat')"><img src="../assets/creativecat.png" alt="Creative Cat" class="category-icon"><span class="category-label">Creative Cat</span></div>
+      <div class="category-tile star" onclick="go('starperformer')"><img src="../assets/starperformer.png" alt="Star Performer" class="category-icon"><span class="category-label">Star Performer</span></div> 
+    </div>
+  </div>
+</body>
+
+
+<script src="../js/state.js"></script>
+<script>
+const board = document.getElementById("scoreboard");
+
+GameState.teams.forEach((team, i) => {
+  const div = document.createElement("div");
+  div.className = "score" + (i === GameState.currentTeam ? " active" : "");
+  div.textContent = `${team}: ${GameState.scores[i]} Punkte`;
+  board.appendChild(div);
+});
+
+function go(cat) {
+  location.href = `../categories/${cat}.html`;
+}
+</script>
+
+</body>
+</html>

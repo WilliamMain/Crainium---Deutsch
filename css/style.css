@@ -1,0 +1,773 @@
+:root {
+  --red: #c0392b;
+  --green: #27ae60;
+  --yellow: #f1c40f;
+  --blue: #2980b9;
+  --dark: #222;
+  --light: #f9f9f9;
+
+  /* Font size tokens to keep card typography consistent */
+  --category-size: 1.05rem;
+  --title-size: 3.2rem; /* slightly reduced for better balance across categories */
+  --question-size: 1.8rem;
+  --option-size: 1.8rem;
+  --answer-size: 2.4rem;
+  --explain-size: 0.95rem;
+  --btn-font-size: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Arial Rounded MT Bold", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, var(--red),  var(--blue)); /* full colours ->  var(--green), var(--yellow) */
+  color: white;
+  min-height: 100vh;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 20px;
+  background: white;
+  color: var(--dark);
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+}
+
+.team {
+  font-weight: bold;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 40px;
+}
+
+.category {
+  padding: 40px;
+  border-radius: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.data { background: var(--red); }
+.word { background: var(--green); }
+.creative { background: var(--yellow); }
+.star { background: var(--blue); }
+
+/* Animierter Hintergrund */
+.gradient-bg {
+  background: linear-gradient(
+    270deg,
+    #e74c3c,
+    #f1c40f,
+    #2ecc71,
+    #3498db
+  );
+  background-size: 800% 800%;
+  animation: gradientMove 15s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Team-Kacheln */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  width: 90%;
+  max-width: 1200px;
+}
+
+.team-card {
+  background: rgba(255,255,255,0.9);
+  color: #222;
+  border-radius: 25px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.team-card input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  text-align: center;
+}
+
+.team-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(0,0,0,0.35);
+  padding: 15px;
+}
+
+.score {
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.active {
+  background: white;
+  color: black;
+}
+
+.category-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap; /* keep tiles on a single horizontal line */
+  gap: 36px;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto; /* allow horizontal scrolling on narrow screens */
+  -webkit-overflow-scrolling: touch;
+  padding: 48px 12px; /* more room for hover scale and shadows */
+}
+
+/* Keep a comfortable layout on very wide screens */
+@media (min-width: 1200px) {
+  .category-grid { justify-content: center; }
+}
+
+/* Hide the horizontal scrollbar (visual preference) while keeping scroll interactive */
+.category-grid::-webkit-scrollbar { height: 8px; }
+.category-grid::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+
+.category-tile {
+  height: 260px;
+  border-radius: 30px;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+.category-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.categories-area {
+  min-height: calc(100vh - 120px); /* Platz für Scoreboard */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* center tiles vertically */
+  padding-top: 0;
+}
+
+
+/* Hover & Entrance Animation */
+.category-tile, .team-card {
+  transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.category-tile:hover, .team-card:hover {
+  transform: translateY(-8px) scale(1.06); /* lift slightly without affecting layout */
+  box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+}
+
+/* Aktives Team pulsiert */
+.active {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+
+.question-box {
+  background: rgba(255,255,255,0.9);
+  padding: 40px;
+  border-radius: 30px;
+  width: 80%;
+  max-width: 900px;
+}
+
+/* Category tile icons */
+.category-tile .category-icon {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 12px;
+}
+
+/* Duplicate .category-grid removed — use the single flex-based declaration above to avoid conflicting layouts */
+/* (This section previously redefined .category-grid as grid which caused vertical stacking on some viewports) */
+
+.category-tile {
+  cursor: pointer;
+  flex-direction: column; /* make sure content stacks vertically */
+  width: 260px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-size: 1.25rem; /* slightly smaller to avoid wrapping */
+  color: white;
+}
+
+.category-label { display: block; margin-top: 6px; font-weight: 700; }
+
+
+.question-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+}
+
+.question-grid button {
+  font-size: 2.5rem;
+  padding: 30px 0;
+  border-radius: 20px;
+}
+
+.flashcard {
+  background: white;
+  color: #222;
+  /* reduced padding to fit more content and allow the card to expand vertically */
+  padding: 30px;
+  border-radius: 40px;
+  width: 90%;
+  max-width: 1100px;
+  max-height: calc(80vh - 120px);
+  overflow: auto; /* allow scrolling when content is long */
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
+
+.flashcard h2 {
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+.flashcard p, .flashcard li {
+  font-size: 1.9rem;
+  line-height: 1.45;
+}
+
+.flashcard ul {
+  margin: 12px auto;
+  max-width: 100%;
+  width: 100%;
+  text-align: left;
+}
+
+.answer {
+  margin-top: 30px;
+  font-weight: bold;
+  color: #27ae60;
+}
+
+/* Flip card styles (used by question pages) 🔧 */
+.card-container {
+  perspective: 1000px;
+  width: 80%;
+  max-width: 1000px;
+}
+
+/* Category theme variables (default fallback) */
+.card-container {
+  --accent: #007acc;
+  --accent-contrast: white;
+}
+
+/* Data head - red */
+.card-container[data-category="datahead"] {
+  --accent: var(--red);
+  --accent-contrast: white;
+}
+
+/* Star performer - blue */
+.card-container[data-category="starperformer"] {
+  --accent: var(--blue);
+  --accent-contrast: white;
+}
+
+/* Creative cat - yellow */
+.card-container[data-category="creativecat"] {
+  --accent: var(--yellow);
+  --accent-contrast: #222;
+}
+
+/* For Creative Cat cards, hide the large per-question title so the layout matches other categories */
+.card-container[data-category="creativecat"] .title {
+  display: none;
+}
+.card-container[data-category="creativecat"] .description {
+  margin-top: 20px; /* ensure description sits where title used to be */
+}
+
+/* Word worm - green */
+.card-container[data-category="wordworm"] {
+  --accent: var(--green);
+  --accent-contrast: white;
+}
+
+/* Word Worm: emphasize the question title so it's clear and prominent */
+.card-container[data-category="wordworm"] .card-face .card-body h2 {
+  font-size: 2.6rem; /* larger for better reference */
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+/* Word Worm layout tweaks: reduce reserved footer space so lists fit without scrolling */
+.card-container[data-category="wordworm"] .card-inner {
+  /* slightly taller min-height to grant more vertical room for lists */
+  min-height: calc(100vh - 180px);
+  max-height: calc(90vh - 40px);
+}
+.card-container[data-category="wordworm"] .card-face .text-area {
+  /* bring the bottom edge up so more text is visible */
+  top: 90px;
+  bottom: 140px;
+}
+.card-container[data-category="wordworm"] .card-face .card-body {
+  padding-bottom: 120px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  /* Use most of the viewport height so content can fit better on smaller screens */
+  min-height: calc(100vh - 160px);
+  max-height: calc(100vh - 80px);
+  text-align: center;
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+  border-radius: 20px;
+}
+
+.card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 32px; /* match flashcardSimple */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; /* left-aligned content like the example */
+  padding: 40px; /* slightly reduced to allow more text to fit */
+  box-sizing: border-box;
+  background: var(--card-bg, white);
+  color: #222;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -6px rgba(0,0,0,0.06);
+  overflow: auto; /* allow scrolling if content still exceeds box */
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background: #fafafa; /* light back like example */
+  color: #111;
+  border: 2px solid var(--accent); /* accent outline */
+}
+
+.flip-btn {
+  margin-top: 20px;
+  padding: 10px 18px;
+  background-color: var(--accent);
+  color: var(--accent-contrast);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* remove previous back flip-btn override */
+
+.flip-btn:hover { opacity: 0.9; }
+
+/* Multiple-choice list styling */
+.mc-options {
+  list-style: disc;
+  display: inline-block; /* shrink-to-fit so it can be centered */
+  text-align: left; /* keep bullet items left-aligned inside the block */
+  margin: 12px auto 0 auto; /* center the block horizontally */
+  padding-left: 1.6rem;
+  max-width: 80%; /* limit width so it looks centered and doesn't span too wide */
+  box-sizing: border-box;
+  overflow: visible; /* we aim to fit lists without scrollbars */
+}
+.mc-options li {
+  font-size: 1.6rem; /* slightly reduced so longer lists fit */
+  margin: 6px 0; /* tighter spacing */
+  word-break: break-word;
+} 
+
+/* Card content body that leaves space for footer tabs */
+.card-face .card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* center vertically within available body */
+  align-items: center; /* center content horizontally */
+  width: 100%;
+  padding-bottom: 100px; /* reduced so more vertical room for list content */
+  padding-left: 48px; /* inner left offset for readable margin */
+  padding-right: 48px;
+  box-sizing: border-box;
+  text-align: center; /* ensure inline content centers */
+}  
+
+.card-face .card-body h2 {
+  font-size: var(--question-size);
+  margin: 0 0 12px 0;
+}
+
+.card-face .card-body p {
+  font-size: var(--question-size); /* match option text size */
+  max-width: 800px;
+} 
+
+.category-tag {
+  position: absolute;
+  top: 48px;
+  left: 48px;
+  font-size: var(--category-size); /* larger category/title tag */
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  font-weight: 900;
+  margin-bottom: 22px;
+  z-index: 2;
+}
+
+@media (max-width: 800px) {
+  .card-face .category-tag {
+    top: 24px;
+    left: 24px;
+    font-size: 0.95rem;
+  }
+}
+
+.title {
+  font-size: var(--title-size); /* consistent title size */
+  margin: 0 0 8px 0; /* reduced gap so the list sits closer */
+  font-weight: 800; /* slightly lighter for better contrast */
+  line-height: 1.05;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* neutral system font for consistent look */
+} 
+
+/* Back face: center the answer block vertically while keeping controls at bottom */
+.card-back .card-body {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Generic centered layout for fronts that should sit in the absolute middle (mc/simple/truefalse) */
+.card-face.centered {
+  justify-content: center;
+}
+.card-face.centered .card-body {
+  align-items: center;
+  text-align: center;
+  padding-bottom: 100px; /* push controls further down so they end up near the mid-lower area */
+} 
+
+/* Fixed text area container that keeps the main text block in a consistent central region */
+.card-face .text-area {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  top: 80px; /* moved up so the question and list sit higher */
+  bottom: 100px; /* reduced space for anchored controls so more of the list shows */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px 20px;
+  overflow: hidden; /* no scrollbars visible; content should fit */
+  -ms-overflow-style: none; /* hide scrollbar in IE/Edge */
+  scrollbar-width: none; /* hide scrollbar in Firefox */
+}
+.card-face .text-area::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+@media (max-width: 800px) {
+  .card-face .text-area {
+    left: 24px;
+    right: 24px;
+    top: 60px; /* move up on narrow screens too */
+    bottom: 60px; /* give mobile more room so lists fit */
+    overflow: hidden; /* hide scrollbars on small screens */
+  }
+}  
+
+
+.description {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: #374151;
+  margin-bottom: 6px;
+  margin-top: 10px;
+}
+
+.answer-highlight {
+  font-size: var(--answer-size);
+  color: var(--accent);
+  margin-bottom: 18px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.answer-explanation {
+  font-size: var(--explain-size); /* smaller explanatory text */
+  line-height: 1.6;
+  color: #000; /* black for clarity */
+  max-width: 680px;
+  margin: 10px auto 20px;
+  text-align: center;
+} 
+
+.card-back .answer {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* Match flashcardSimple controls */
+.flip-btn-container {
+  position: absolute; /* anchor single-button use cases to the bottom */
+  left: 48px;
+  right: 48px;
+  bottom: 48px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0;
+  margin-top: 0;
+} 
+
+.main-action-btn {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border: none;
+  padding: 16px 56px;
+  border-radius: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-size: 1.05rem;
+  box-shadow: 0 12px 20px -6px rgba(0,0,0,0.16);
+}
+
+.main-action-btn:hover { transform: translateY(-3px); }
+
+.controls-row {
+  position: absolute; /* anchor controls to bottom of the card face */
+  left: 48px;
+  right: 48px;
+  bottom: 48px; /* fixed distance from the bottom edge of the card */
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+  pointer-events: auto;
+} 
+
+.controls-row .main-action-btn {
+  padding: 12px 26px;
+  font-size: 1rem;
+}
+
+.ctrl-btn {
+  background: white;
+  color: #222;
+  padding: 12px 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px -8px rgba(0,0,0,0.18);
+  border: none;
+  font-size: 1.05rem;
+}
+
+/* Place corner image inside faces so it flips with the card */
+.card-face .card-corner {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  pointer-events: none;
+  opacity: 0.98;
+  transform: rotate(-6deg);
+}
+
+/* Simple question layout: center front text and push controls lower */
+.card-face.simple {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.card-face.simple .card-body {
+  align-items: center; /* center within the body */
+  padding-bottom: 100px; /* increase breathing room so buttons sit lower */
+} 
+.card-face.simple .description {
+  margin: 0.5rem 0 1.5rem;
+}  
+
+/* Footer with three controls: correct, show answer, wrong */
+.card-footer {
+  position: absolute;
+  left: 50%;
+  bottom: -36px; /* protrude below card */
+  transform: translateX(-50%);
+  width: 72%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none; /* allow individual buttons to control pointer-events */
+}
+
+.card-footer button { pointer-events: auto; }
+
+.tab-btn {
+  background: white;
+  color: #222;
+  padding: 18px 48px;
+  border-radius: 12px;
+  font-size: 1.6rem;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+  border: none;
+}
+
+.tab-btn.left { margin-right: 20px; }
+.tab-btn.right { margin-left: 20px; }
+
+.card-footer .flip-btn.center {
+  background-color: var(--accent);
+  color: var(--accent-contrast);
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+/* On the back face, the center button should invert colors (white background, accent text) */
+.card-back .card-footer .flip-btn.center {
+  background-color: var(--accent-contrast);
+  color: var(--accent);
+}
+
+/* (Deprecated) top-level corner rules removed; corner images are placed per-face with `.card-face .card-corner` */
+
+/* Smaller screens: reduce footer protrusion and spacing */
+@media (max-width: 700px) {
+  .card-footer { bottom: -28px; width: 86%; }
+  .tab-btn { padding: 12px 30px; font-size: 1.2rem; }
+  .card-face .card-body { padding-bottom: 64px; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  .card-inner { min-height: 300px; }
+  .card-face { padding: 24px; }
+  .mc-options li { font-size: 1.4rem; }
+}
+
+.flash-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.flash-buttons button {
+  font-size: 1.8rem;
+  padding: 25px 40px;
+}
+
+.big-title {
+  font-size: 5rem;
+  margin-bottom: 30px;
+}
+
+.big-text {
+  font-size: 2.5rem;
+  max-width: 900px;
+}
+
+.used {
+  opacity: 0.25;
+  filter: grayscale(100%);
+  cursor: not-allowed;
+}
+
+.unused {
+  animation: pulseSoft 2s infinite;
+}
+
+@keyframes pulseSoft {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Ensure category grid uses single-row flex layout and cannot be overridden by other declarations */
+.categories-area .category-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 36px !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+

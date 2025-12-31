@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Teams</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="gradient-bg">
+
+<div class="center">
+  <h1 class="big-title">Teams erstellen</h1>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-icon">Team 1</div>
+      <input placeholder="Team 1">
+    </div>
+
+    <div class="team-card">
+      <div class="team-icon">Team 2</div>
+      <input placeholder="Team 2">
+    </div>
+
+    <div class="team-card">
+      <div class="team-icon">Team 3</div>
+      <input placeholder="Team 3">
+    </div>
+
+    <div class="team-card">
+      <div class="team-icon">Team 4</div>
+      <input placeholder="Team 4">
+    </div>
+  </div>
+
+  <button onclick="saveTeams()">Weiter</button>
+</div>
+
+<script src="../js/state.js"></script>
+<script>
+function saveTeams() {
+  const inputs = document.querySelectorAll("input");
+
+  GameState.teams = [...inputs].map(i => i.value || "Team");
+  GameState.scores = [0, 0, 0, 0];
+  GameState.currentTeam = 0; // 🔥 WICHTIG: Reset auf Team 1
+
+  saveState();
+  location.href = "categories.html";
+}
+
+</script>
+
+</body>
+</html>
